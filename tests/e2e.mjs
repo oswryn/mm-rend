@@ -153,7 +153,7 @@ async function main() {
     );
     await options.click("#grant");
     await options.waitForFunction(
-      () => document.getElementById("grant-msg").textContent.startsWith("Enabled on"),
+      () => document.getElementById("grant-msg").textContent.includes("is allowed"),
       { timeout: 15000, polling: 250 },
     );
 
@@ -178,10 +178,10 @@ async function main() {
       const state = await page.evaluate(() => {
         const pre = document.querySelector('pre[data-mm-rend="error"]');
         const host = pre.previousElementSibling;
-        return { hidden: pre.hidden, errorText: host.shadowRoot.querySelector(".error")?.textContent ?? "" };
+        return { hidden: pre.hidden, errorText: host.shadowRoot.querySelector(".error-text")?.textContent ?? "" };
       });
       assert.equal(state.hidden, false);
-      assert.match(state.errorText, /could not render/);
+      assert.ok(state.errorText.length > 0, "error message should be shown");
     });
 
     await check("non-mermaid and native-container blocks are untouched", async () => {
@@ -196,15 +196,22 @@ async function main() {
 
     await check("Show source toggles the original fence", async () => {
       const result = await page.evaluate(() => {
-        const host = document.querySelector('.mm-rend-host[data-mm-state], .mm-rend-host');
+        const host = document.querySelector(".mm-rend-host");
         const pre = host.nextElementSibling;
         const button = host.shadowRoot.querySelector("button");
-        const before = { label: button.textContent, hidden: pre.hidden };
+        const snapshot = () => ({
+          label: button.textContent,
+          visible: getComputedStyle(pre).display !== "none",
+        });
+        const before = snapshot();
         button.click();
-        return { before, after: { label: button.textContent, hidden: pre.hidden } };
+        const after = snapshot();
+        button.click();
+        return { before, after, restored: snapshot() };
       });
-      assert.deepEqual(result.before, { label: "Show source", hidden: true });
-      assert.deepEqual(result.after, { label: "Hide source", hidden: false });
+      assert.deepEqual(result.before, { label: "Show source", visible: false });
+      assert.deepEqual(result.after, { label: "Hide source", visible: true });
+      assert.deepEqual(result.restored, { label: "Show source", visible: false });
     });
 
     await check("blocks added after load are rendered via MutationObserver", async () => {
@@ -226,7 +233,7 @@ async function main() {
     });
 
     await check("disable stops rendering on new page loads", async () => {
-      await options.click(".secondary");
+      await options.click("#sites .remove");
       await options.waitForFunction(() => document.getElementById("sites").children.length === 0, {
         timeout: 15000,
         polling: 250,

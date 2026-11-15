@@ -2,29 +2,58 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Mermaid Fence Renderer - Sites</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mermaid Fence Renderer - Allowed sites</title>
     <link rel="stylesheet" href="../shared/ui.css" />
   </head>
   <body>
-    <main>
-      <h1>Mermaid Fence Renderer</h1>
-      <p class="muted">
-        Fenced <code>```mermaid</code> blocks are rendered only on sites you allow. Diagrams are drawn locally and no
-        network requests are made.
-      </p>
+    <main class="page">
+      <header class="brand page-head">
+        <img src="../icons/icon128.png" alt="" />
+        <div>
+          <h1>Mermaid Fence Renderer</h1>
+          <p class="muted">Draws fenced <code>```mermaid</code> blocks on the sites you allow.</p>
+        </div>
+      </header>
 
-      <section class="card">
-        <h2>Allow a site</h2>
-        <label for="origin">Site URL</label>
-        <input id="origin" type="url" placeholder="https://tfs.contoso.local" />
-        <button id="grant" type="button">Grant access and enable</button>
-        <p id="grant-msg" class="msg" role="status"></p>
+      <section class="card" aria-labelledby="sites-title">
+        <div class="card-head">
+          <h2 id="sites-title">Allowed sites</h2>
+          <span id="count" class="pill neutral">0</span>
+        </div>
+        <ul id="sites" class="site-list" hidden></ul>
+        <div id="empty" class="empty">
+          <img src="../icons/icon128.png" alt="" />
+          <p><strong>No sites yet</strong></p>
+          <p class="small">Add your Azure DevOps address below. Nothing runs on a site until you allow it.</p>
+        </div>
       </section>
 
-      <section class="card">
-        <h2>Enabled sites</h2>
-        <ul id="sites"></ul>
-        <p id="empty" class="muted" hidden>No sites enabled yet.</p>
+      <section class="card" aria-labelledby="add-title">
+        <div class="card-head">
+          <h2 id="add-title">Allow a site</h2>
+        </div>
+        <div class="field">
+          <label for="origin">Site address</label>
+          <div class="row">
+            <input id="origin" type="url" placeholder="https://tfs.contoso.local" autocomplete="off" spellcheck="false" />
+            <button id="grant" type="button" class="primary">Allow</button>
+          </div>
+          <p class="small muted">Use the server root, for example <span class="kbd">https://tfs.contoso.local</span>. The browser will ask you to confirm access.</p>
+        </div>
+        <p id="grant-msg" class="notice" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="card" aria-labelledby="how-title">
+        <div class="card-head">
+          <h2 id="how-title">How it works</h2>
+        </div>
+        <ol class="steps">
+          <li><span><strong>Allow a site.</strong> The browser asks for access to that address only.</span></li>
+          <li><span><strong>Open a page with a mermaid fence.</strong> Wiki, pull request and work item pages all render.</span></li>
+          <li><span><strong>Toggle the source.</strong> Each diagram has a Show source button that reveals the original text.</span></li>
+        </ol>
+        <p class="small muted mt">Diagrams are drawn on your machine. The extension does not send page content anywhere.</p>
       </section>
     </main>
     <script src="../shared/sites.js"></script>

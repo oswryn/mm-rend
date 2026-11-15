@@ -2,22 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mermaid Fence Renderer</title>
     <link rel="stylesheet" href="../shared/ui.css" />
-    <style>
-      body {
-        width: 300px;
-      }
-    </style>
   </head>
   <body>
-    <main>
-      <h1>Mermaid Fence Renderer</h1>
-      <p id="site" class="muted">Checking this page...</p>
-      <p id="status"></p>
-      <button id="enable" type="button" hidden>Enable on this site</button>
-      <button id="disable" type="button" class="secondary" hidden>Disable on this site</button>
-      <p><a href="#" id="manage">Manage sites</a></p>
+    <main class="popup">
+      <header class="brand">
+        <img src="../icons/icon48.png" alt="" />
+        <div>
+          <h1>Mermaid Fence Renderer</h1>
+          <p class="small muted">Current site</p>
+        </div>
+      </header>
+
+      <section class="card site-card">
+        <div class="site-card-head">
+          <p id="site" class="site-address muted">Checking this page...</p>
+          <span id="status" class="pill neutral" hidden></span>
+        </div>
+        <p id="hint" class="small muted"></p>
+        <button id="enable" type="button" class="primary block" hidden>Allow this site</button>
+        <button id="disable" type="button" class="secondary block" hidden>Stop rendering here</button>
+      </section>
+
+      <p class="manage">
+        <a href="#" id="manage">Manage allowed sites</a>
+      </p>
     </main>
     <script src="../shared/sites.js"></script>
     <script src="popup.js"></script>

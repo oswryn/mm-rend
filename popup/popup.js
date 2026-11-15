@@ -11,14 +11,21 @@
 
   if (!origin) {
     $("site").textContent = "Mermaid fences can only be rendered on http and https pages.";
+    $("hint").textContent = "Open an Azure DevOps page to get started.";
     return;
   }
 
   const enabled = (await MMSites.getEnabled()).includes(origin) && (await MMSites.hasPermission(origin));
-  $("site").textContent = origin;
-  $("status").textContent = enabled
-    ? "Mermaid fences are rendered on this site. Reload the page after disabling to stop rendering."
-    : "Not enabled. Mermaid fences on this site are shown as plain code.";
+  $("site").textContent = new URL(origin).host;
+
+  const status = $("status");
+  status.hidden = false;
+  status.className = enabled ? "pill success" : "pill neutral";
+  status.textContent = enabled ? "Active" : "Off";
+
+  $("hint").textContent = enabled
+    ? "Fenced mermaid blocks are drawn on this site. Reload open pages after stopping."
+    : "Mermaid fences on this site are shown as plain code until you allow it.";
 
   $("enable").hidden = enabled;
   $("disable").hidden = !enabled;
