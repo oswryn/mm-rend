@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mermaid fence fixtures</title>
+    <link rel="stylesheet" href="fixture.css" />
+  </head>
+  <body>
+    <h1>Wiki page</h1>
+
+    <h2>Fenced flowchart (renders)</h2>
+    <pre><code class="language-mermaid">flowchart LR
+  A[Start] --&gt; B{Ready?}
+  B --&gt;|yes| C[Ship]
+  B --&gt;|no| D[Fix]</code></pre>
+
+    <h2>Highlighted sequence diagram (renders)</h2>
+    <pre><code class="hljs language-mermaid">sequenceDiagram
+  Alice-&gt;&gt;Bob: Hello Bob
+  Bob--&gt;&gt;Alice: Hi Alice</code></pre>
+
+    <h2>Unlabelled class diagram (renders by keyword detection)</h2>
+    <pre><code>classDiagram
+  class Animal {
+    +int age
+  }
+  Animal &lt;|-- Duck</code></pre>
+
+    <h2>Invalid diagram (shows error, keeps source)</h2>
+    <pre><code class="language-mermaid">this is not a diagram</code></pre>
+
+    <h2>Not mermaid (left alone)</h2>
+    <pre><code class="language-js">const total = items.length;</code></pre>
+    <pre><code>Just some plain output</code></pre>
+    <p>Inline <code>flowchart</code> keyword stays as text.</p>
+
+    <h2>Native container (left alone)</h2>
+    <div class="mermaid"><pre><code class="language-mermaid">graph TD; X--&gt;Y</code></pre></div>
+
+    <h2>Added after load</h2>
+    <button id="add" type="button">Add diagram</button>
+    <div id="dynamic"></div>
+
+    <script src="sample.js"></script>
+  </body>
+</html>

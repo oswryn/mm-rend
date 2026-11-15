@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'" />
+    <title>Mermaid fence fixtures (strict CSP)</title>
+    <link rel="stylesheet" href="fixture.css" />
+  </head>
+  <body>
+    <h1>Wiki page with a strict style-src CSP</h1>
+
+    <h2>Fenced flowchart (renders with styles)</h2>
+    <pre><code class="language-mermaid">flowchart LR
+  A[Start] --&gt; B[End]</code></pre>
+
+    <script src="sample.js"></script>
+  </body>
+</html>
