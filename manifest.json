@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Mermaid Fence Renderer",
+  "short_name": "Mermaid Fences",
+  "version": "1.0.0",
+  "description": "Renders ```mermaid fenced code blocks as diagrams on sites you allow, such as on-premises Azure DevOps. Diagrams are drawn locally; no network requests are made.",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Mermaid Fence Renderer",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "permissions": [
+    "offscreen",
+    "scripting",
+    "storage",
+    "activeTab"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "sandbox": {
+    "pages": ["sandbox/sandbox.html"]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'",
+    "sandbox": "sandbox allow-scripts; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src data:; font-src data:; default-src 'none'"
+  }
+}
