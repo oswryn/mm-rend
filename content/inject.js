@@ -6,15 +6,25 @@
       display: block;
       margin: 12px 0;
       font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: CanvasText;
+      color: inherit;
     }
     .card {
       margin: 0;
       border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
       border-radius: 10px;
-      background: Canvas;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      background: transparent;
+      color: inherit;
       overflow: hidden;
+    }
+    .card[data-bg="light"] {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    }
+    .card[data-bg="dark"] {
+      background: #111827;
+      color: #e5e7eb;
+      border-color: rgba(148, 163, 184, 0.25);
     }
     .bar {
       display: flex;
@@ -48,8 +58,8 @@
       padding: 3px 10px;
       border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
       border-radius: 999px;
-      background: Canvas;
-      color: CanvasText;
+      background: transparent;
+      color: inherit;
       cursor: pointer;
     }
     button:hover {
@@ -81,6 +91,9 @@
       white-space: pre-wrap;
       font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
       color: #b42318;
+    }
+    .card[data-bg="dark"] .error-text {
+      color: #fda29b;
     }
     .note {
       padding: 0 12px 10px;
@@ -130,14 +143,17 @@
     }
   }
 
-  function createCard(pre, variant) {
+  function createCard(pre, variant, background) {
     const host = document.createElement("div");
     host.className = "mm-rend-host";
     const root = host.attachShadow({ mode: "open" });
     root.adoptedStyleSheets = [sheetFrom(BASE_CSS)];
     const card = document.createElement("figure");
     card.className = variant === "error" ? "card error" : "card";
+    card.dataset.bg = background;
     root.append(card);
+    const previous = pre.previousElementSibling;
+    if (previous?.classList.contains("mm-rend-host")) previous.remove();
     pre.before(host);
     return { root, card };
   }
@@ -163,11 +179,11 @@
     sync();
   }
 
-  NS.renderDiagram = function renderDiagram(pre, svgText) {
+  NS.renderDiagram = function renderDiagram(pre, svgText, background = "page") {
     const svg = parseSvg(svgText);
     const styles = liftInlineStyles(svg);
 
-    const { root, card } = createCard(pre, "diagram");
+    const { root, card } = createCard(pre, "diagram", background);
     if (styles.length) {
       root.adoptedStyleSheets = [...root.adoptedStyleSheets, ...styles.map(sheetFrom)];
     }
@@ -180,8 +196,8 @@
     card.append(diagram);
   };
 
-  NS.showError = function showError(pre, message) {
-    const { card } = createCard(pre, "error");
+  NS.showError = function showError(pre, message, background = "page") {
+    const { card } = createCard(pre, "error", background);
     const bar = document.createElement("div");
     bar.className = "bar";
     const title = document.createElement("span");
