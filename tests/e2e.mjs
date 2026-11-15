@@ -232,7 +232,71 @@ async function main() {
       await strict.close();
     });
 
+    await check("options preview renders the sample diagram", async () => {
+      await options.bringToFront();
+      await options.waitForFunction(() => document.querySelector("#preview-svg svg") !== null, {
+        timeout: 15000,
+        polling: 250,
+      });
+    });
+
+    const fillOfFirstDiagram = () =>
+      page.evaluate(() => getComputedStyle(document.querySelector(".mm-rend-host").shadowRoot.querySelector("rect")).fill);
+    const cardStyleOfFirstDiagram = () =>
+      page.evaluate(() => {
+        const card = document.querySelector(".mm-rend-host").shadowRoot.querySelector(".card");
+        return { background: getComputedStyle(card).backgroundColor, bg: card.dataset.bg };
+      });
+
+    await check("changing the theme re-renders open diagrams", async () => {
+      await options.bringToFront();
+      await options.select("#theme", "dark");
+      await page.bringToFront();
+      await page.waitForFunction(
+        () => {
+          const rect = document.querySelector(".mm-rend-host")?.shadowRoot?.querySelector("rect");
+          return Boolean(rect) && getComputedStyle(rect).fill !== "rgb(236, 236, 255)";
+        },
+        { timeout: 15000, polling: 250 },
+      );
+      assert.deepEqual(await cardStyleOfFirstDiagram(), { background: "rgba(0, 0, 0, 0)", bg: "page" });
+    });
+
+    await check("auto theme follows a dark page behind the diagram", async () => {
+      await options.bringToFront();
+      await options.select("#theme", "auto");
+      await page.bringToFront();
+      await page.evaluate(() => {
+        document.body.style.background = "#0b1020";
+        document.body.style.color = "#e2e8f0";
+      });
+      await page.waitForFunction(
+        () => {
+          const rect = document.querySelector(".mm-rend-host")?.shadowRoot?.querySelector("rect");
+          if (!rect) return false;
+          const [r, g, b] = getComputedStyle(rect).fill.match(/\d+/g).map(Number);
+          return r + g + b < 300;
+        },
+        { timeout: 15000, polling: 250 },
+      );
+    });
+
+    await check("light card background stays readable on a dark page", async () => {
+      await options.bringToFront();
+      await options.select("#background", "light");
+      await page.bringToFront();
+      await page.waitForFunction(
+        () => {
+          const card = document.querySelector(".mm-rend-host")?.shadowRoot?.querySelector(".card");
+          return Boolean(card) && getComputedStyle(card).backgroundColor === "rgb(255, 255, 255)";
+        },
+        { timeout: 15000, polling: 250 },
+      );
+      assert.equal((await cardStyleOfFirstDiagram()).bg, "light");
+    });
+
     await check("disable stops rendering on new page loads", async () => {
+      await options.bringToFront();
       await options.click("#sites .remove");
       await options.waitForFunction(() => document.getElementById("sites").children.length === 0, {
         timeout: 15000,

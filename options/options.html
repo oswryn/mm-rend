@@ -29,6 +29,42 @@
         </div>
       </section>
 
+      <section class="card" aria-labelledby="look-title">
+        <div class="card-head">
+          <h2 id="look-title">Diagram appearance</h2>
+          <span id="save-state" class="pill success" hidden>Saved</span>
+        </div>
+        <div class="settings-grid">
+          <div class="field">
+            <label for="theme">Diagram theme</label>
+            <select id="theme">
+              <option value="auto">Match the page</option>
+              <option value="default">Light</option>
+              <option value="dark">Dark</option>
+              <option value="neutral">Neutral</option>
+              <option value="forest">Forest</option>
+            </select>
+            <p class="small muted">Match the page picks light or dark from the background behind each diagram.</p>
+          </div>
+          <div class="field">
+            <label for="background">Card background</label>
+            <select id="background">
+              <option value="page">Transparent</option>
+              <option value="light">Light card</option>
+              <option value="dark">Dark card</option>
+            </select>
+            <p class="small muted">Transparent lets the page show through. Fixed cards stay readable on any page.</p>
+          </div>
+        </div>
+        <div class="preview-wrap">
+          <p class="small muted">Preview</p>
+          <div id="preview" class="preview" data-bg="page">
+            <div id="preview-svg" class="preview-svg"></div>
+            <p id="preview-status" class="small muted"></p>
+          </div>
+        </div>
+      </section>
+
       <section class="card" aria-labelledby="add-title">
         <div class="card-head">
           <h2 id="add-title">Allow a site</h2>
@@ -57,6 +93,8 @@
       </section>
     </main>
     <script src="../shared/sites.js"></script>
+    <script src="../shared/settings.js"></script>
+    <script src="appearance.js"></script>
     <script src="options.js"></script>
   </body>
 </html>

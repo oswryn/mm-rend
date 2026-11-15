@@ -40,6 +40,15 @@ To stop rendering, use **Disable on this site** in the popup, or **Remove** on t
 Each rendered diagram has a **Show source** button that reveals the original fence text.
 If a block fails to parse, the source stays visible with a short error message.
 
+## Appearance
+
+Open the options page and use **Diagram appearance**. Changes apply immediately to open pages.
+
+- **Diagram theme**: *Match the page* (default) picks light or dark from the background behind each diagram. You can also force Light, Dark, Neutral or Forest.
+- **Card background**: *Transparent* (default) lets the page show through. *Light card* and *Dark card* keep diagrams readable on any page.
+
+Settings are saved with `chrome.storage.sync`, so they follow your browser profile when sync is on.
+
 ## Permissions
 
 | Permission | Why |
