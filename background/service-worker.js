@@ -16,15 +16,18 @@ async function ensureOffscreen() {
   await creatingOffscreen;
 }
 
-async function renderInOffscreen(id, source) {
+async function renderInOffscreen(id, source, theme) {
   await ensureOffscreen();
-  return chrome.runtime.sendMessage({ target: "mm-offscreen", type: "render", id, source });
+  return chrome.runtime.sendMessage({ target: "mm-offscreen", type: "render", id, source, theme });
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.type !== "MM_RENDER" || !sender.tab) return false;
+  if (message?.type !== "MM_RENDER") return false;
+  const fromTab = Boolean(sender.tab);
+  const fromExtensionPage = sender.id === chrome.runtime.id && !sender.tab;
+  if (!fromTab && !fromExtensionPage) return false;
 
-  renderInOffscreen(message.id, message.source)
+  renderInOffscreen(message.id, message.source, message.theme)
     .then(sendResponse)
     .catch((error) => sendResponse({ ok: false, error: error.message }));
   return true;

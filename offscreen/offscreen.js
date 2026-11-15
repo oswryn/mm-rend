@@ -28,7 +28,7 @@ window.addEventListener("message", (event) => {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.target !== "mm-offscreen" || message.type !== "render") return false;
 
-  const { id, source } = message;
+  const { id, source, theme } = message;
   const reply = new Promise((resolve) => {
     const timer = setTimeout(() => {
       pending.delete(id);
@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   });
 
   ready.then(() => {
-    frame.contentWindow.postMessage({ target: "mm-sandbox", id, source }, "*");
+    frame.contentWindow.postMessage({ target: "mm-sandbox", id, source, theme }, "*");
   });
   reply.then(sendResponse);
   return true;

@@ -449,3 +449,74 @@ code {
 .mt {
   margin-top: 14px;
 }
+
+select {
+  font: inherit;
+  width: 100%;
+  padding: 9px 12px;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview-wrap {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.preview {
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.preview[data-bg="light"] {
+  background: #ffffff;
+  color: #0f172a;
+  border-style: solid;
+  border-color: #e2e8f0;
+}
+
+.preview[data-bg="dark"] {
+  background: #111827;
+  color: #e5e7eb;
+  border-style: solid;
+  border-color: #334155;
+}
+
+.preview-svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#preview-status:empty {
+  display: none;
+}

@@ -1,5 +1,5 @@
 (() => {
-  const CONTENT_JS = ["content/detect.js", "content/inject.js", "content/content.js"];
+  const CONTENT_JS = ["shared/settings.js", "content/detect.js", "content/inject.js", "content/content.js"];
   const CONTENT_CSS = ["content/content.css"];
   const STORAGE_KEY = "enabledOrigins";
 
