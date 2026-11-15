@@ -77,6 +77,11 @@ npm run vendor
 `npm run vendor` copies `node_modules/mermaid/dist/mermaid.min.js` into `vendor/` and fails if the
 bundle would need to fetch chunks at runtime.
 
+## Icons
+
+The toolbar and options icon is drawn in `icons/icon.svg`. After editing it, regenerate the PNGs with
+`CHROME_PATH=/path/to/chrome npm run icons`.
+
 ## Development and tests
 
 ```

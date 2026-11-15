@@ -2,12 +2,91 @@
   const NS = (globalThis.MMRend ??= {});
 
   const BASE_CSS = `
-    :host { display: block; font: 13px/1.4 system-ui, sans-serif; color: inherit; }
-    .bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; font-size: 12px; opacity: 0.75; }
-    button { font: inherit; padding: 2px 8px; border: 1px solid currentColor; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
-    .diagram { overflow: auto; padding: 8px 0; }
-    .diagram svg { max-width: 100%; height: auto; }
-    .error { color: #b42318; white-space: pre-wrap; font: 12px/1.4 ui-monospace, Consolas, monospace; }
+    :host {
+      display: block;
+      margin: 12px 0;
+      font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: CanvasText;
+    }
+    .card {
+      margin: 0;
+      border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+      border-radius: 10px;
+      background: Canvas;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 10px;
+      border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+      background: color-mix(in srgb, currentColor 4%, transparent);
+    }
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .label::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+    button {
+      font: inherit;
+      font-size: 12px;
+      padding: 3px 10px;
+      border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+      border-radius: 999px;
+      background: Canvas;
+      color: CanvasText;
+      cursor: pointer;
+    }
+    button:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+    }
+    button:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+    .diagram {
+      overflow: auto;
+      padding: 12px;
+    }
+    .diagram svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+    .card.error {
+      border-left: 3px solid #d92d20;
+    }
+    .card.error .label::before {
+      background: #d92d20;
+    }
+    .error-text {
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+      color: #b42318;
+    }
+    .note {
+      padding: 0 12px 10px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
   `;
 
   const sheetFrom = (css) => {
@@ -40,31 +119,47 @@
     return css;
   }
 
-  function createHost(pre) {
+  // Page CSS such as `pre { display: block }` overrides the hidden attribute,
+  // so visibility is enforced with an inline !important declaration.
+  function setSourceVisible(pre, visible) {
+    pre.hidden = !visible;
+    if (visible) {
+      pre.style.removeProperty("display");
+    } else {
+      pre.style.setProperty("display", "none", "important");
+    }
+  }
+
+  function createCard(pre, variant) {
     const host = document.createElement("div");
     host.className = "mm-rend-host";
     const root = host.attachShadow({ mode: "open" });
     root.adoptedStyleSheets = [sheetFrom(BASE_CSS)];
+    const card = document.createElement("figure");
+    card.className = variant === "error" ? "card error" : "card";
+    root.append(card);
     pre.before(host);
-    return root;
+    return { root, card };
   }
 
-  function addSourceToggle(root, pre) {
+  function addToolbar(card, pre) {
     const bar = document.createElement("div");
     bar.className = "bar";
     const label = document.createElement("span");
-    label.textContent = "Mermaid diagram";
+    label.className = "label";
+    label.textContent = "Mermaid";
     const button = document.createElement("button");
     button.type = "button";
     const sync = () => {
       button.textContent = pre.hidden ? "Show source" : "Hide source";
+      button.setAttribute("aria-expanded", String(!pre.hidden));
     };
     button.addEventListener("click", () => {
-      pre.hidden = !pre.hidden;
+      setSourceVisible(pre, pre.hidden);
       sync();
     });
     bar.append(label, button);
-    root.append(bar);
+    card.append(bar);
     sync();
   }
 
@@ -72,25 +167,34 @@
     const svg = parseSvg(svgText);
     const styles = liftInlineStyles(svg);
 
-    const root = createHost(pre);
+    const { root, card } = createCard(pre, "diagram");
     if (styles.length) {
       root.adoptedStyleSheets = [...root.adoptedStyleSheets, ...styles.map(sheetFrom)];
     }
-    pre.hidden = true;
-    addSourceToggle(root, pre);
+    setSourceVisible(pre, false);
+    addToolbar(card, pre);
 
     const diagram = document.createElement("div");
     diagram.className = "diagram";
     diagram.append(svg);
-    root.append(diagram);
+    card.append(diagram);
   };
 
   NS.showError = function showError(pre, message) {
-    const root = createHost(pre);
-    const error = document.createElement("div");
-    error.className = "error";
-    error.textContent = `Mermaid could not render this block: ${message}`;
-    root.append(error);
-    pre.hidden = false;
+    const { card } = createCard(pre, "error");
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    const title = document.createElement("span");
+    title.className = "label";
+    title.textContent = "Mermaid error";
+    bar.append(title);
+    const text = document.createElement("div");
+    text.className = "error-text";
+    text.textContent = message;
+    const note = document.createElement("div");
+    note.className = "note";
+    note.textContent = "The source below could not be drawn.";
+    card.append(bar, text, note);
+    setSourceVisible(pre, true);
   };
 })();
