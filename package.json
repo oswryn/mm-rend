@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "vendor": "node scripts/vendor-mermaid.mjs",
-    "test": "node tests/e2e.mjs"
+    "test": "node tests/e2e.mjs",
+    "icons": "node scripts/build-icons.mjs"
   },
   "devDependencies": {
     "mermaid": "12.3.0",
