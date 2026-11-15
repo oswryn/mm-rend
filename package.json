@@ -1,0 +1,15 @@
+{
+  "name": "mermaid-fence-renderer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome and Edge extension that renders fenced mermaid code blocks locally",
+  "license": "MIT",
+  "scripts": {
+    "vendor": "node scripts/vendor-mermaid.mjs",
+    "test": "node tests/e2e.mjs"
+  },
+  "devDependencies": {
+    "mermaid": "12.3.0",
+    "puppeteer-core": "^24.43.1"
+  }
+}
