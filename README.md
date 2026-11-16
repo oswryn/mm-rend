@@ -18,6 +18,12 @@ The same unpacked folder works in both browsers.
 4. Click **Load unpacked** and select the repository root (the folder that contains `manifest.json`).
 5. Open the extension's **Details** page and choose **Extension options** to manage allowed sites.
 
+Examples:
+
+<img width="377" height="1051" alt="image" src="https://github.com/user-attachments/assets/a6e6d48b-1627-49a2-a4bb-cee1f9bbde9a" />
+
+<img width="1167" height="212" alt="image" src="https://github.com/user-attachments/assets/ad5f6808-5f97-4637-b815-679b2b6106ef" />
+
 Requires Chrome or Edge 116 or newer.
 
 ## Enable on your Azure DevOps host
