@@ -20,17 +20,16 @@ The same unpacked folder works in both browsers.
 
 Examples:
 
-| Image 1 | Image 2 | Image 3 |
-|---------|---------|---------|
-| ![Alt 1](path/to/image1.png) | ![Alt 2](path/to/image2.png) | ![Alt 3](path/to/image3.png) |
+| download repo | enable dev mode | load unpacked | correct folder |
+|---------|---------|---------|---------|
+| <img width="1030" height="525" alt="downloading the repository as a zip" src="https://github.com/user-attachments/assets/dce37f98-bbcd-4de8-a0dd-7f60a985ef3f" /> | <img width="335" height="307" alt="enabling developer mode" src="https://github.com/user-attachments/assets/ad978cfd-7549-4f39-a84b-53d678eb0e44" /> | <img width="1167" height="212" alt="loading unpacked" src="https://github.com/user-attachments/assets/ad5f6808-5f97-4637-b815-679b2b6106ef" /> | <img width="891" height="673" alt="correct folder to open" src="https://github.com/user-attachments/assets/ff9ea85f-03bd-4d32-bbce-0a66a8bb140d" /> |
 
-<img width="1030" height="525" alt="downloading the repository as a zip" src="https://github.com/user-attachments/assets/dce37f98-bbcd-4de8-a0dd-7f60a985ef3f" />
 
-<img width="335" height="307" alt="enabling developer mode" src="https://github.com/user-attachments/assets/ad978cfd-7549-4f39-a84b-53d678eb0e44" />
 
-<img width="1167" height="212" alt="loading unpacked" src="https://github.com/user-attachments/assets/ad5f6808-5f97-4637-b815-679b2b6106ef" />
 
-<img width="891" height="673" alt="correct folder to open" src="https://github.com/user-attachments/assets/ff9ea85f-03bd-4d32-bbce-0a66a8bb140d" />
+
+
+
 
 Requires Chrome or Edge 116 or newer.
 
