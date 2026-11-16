@@ -24,6 +24,8 @@ Examples:
 
 <img width="1167" height="212" alt="image" src="https://github.com/user-attachments/assets/ad5f6808-5f97-4637-b815-679b2b6106ef" />
 
+<img width="891" height="673" alt="image" src="https://github.com/user-attachments/assets/ff9ea85f-03bd-4d32-bbce-0a66a8bb140d" />
+
 Requires Chrome or Edge 116 or newer.
 
 ## Enable on your Azure DevOps host
@@ -34,6 +36,8 @@ The extension asks for access to each site separately. Nothing runs on a site un
 2. Click the extension icon and choose **Enable on this site**. This opens the options page with the site filled in.
 3. Click **Grant access and enable** and accept the browser prompt.
 4. The open tab renders immediately. Future page loads on that site render automatically.
+
+<img width="322" height="295" alt="image" src="https://github.com/user-attachments/assets/d0ac8871-9e64-4181-87ca-f1dab740edb8" />
 
 To stop rendering, use **Disable on this site** in the popup, or **Remove** on the options page. Reload open pages afterwards.
 
